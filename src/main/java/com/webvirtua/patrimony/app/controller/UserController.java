@@ -43,7 +43,7 @@ public class UserController
 
 	@PostMapping({"/", ""})
 	@ResponseStatus(HttpStatus.CREATED)
-	public ReturnRequest insert(@Valid @RequestBody UserDTO user) // @Valid não está pegando, tá tentando validar mas dá erro 500
+	public ReturnRequest insert(@Valid @RequestBody UserDTO user)
 	{
 		ReturnRequest result = userService.insert(user);
 		return result;

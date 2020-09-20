@@ -14,22 +14,22 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.webvirtua.patrimony.app.dto.BrandDTO;
+import com.webvirtua.patrimony.app.dto.PatrimonyDTO;
 import com.webvirtua.patrimony.app.resources.utils.ReturnRequest;
-import com.webvirtua.patrimony.app.service.BrandService;
+import com.webvirtua.patrimony.app.service.PatrimonyService;
 
 @RestController
-@RequestMapping("/v1/brands")
-public class BrandController 
+@RequestMapping("/v1/patrimony")
+public class PatrimonyController 
 {
 	@Autowired 
-	private BrandService brandService;
+	private PatrimonyService patrimonyService;
 	
 	@GetMapping({"/", ""})
 	@ResponseStatus(HttpStatus.OK)
 	public ReturnRequest findAll() 
 	{
-		ReturnRequest result = brandService.findAll();
+		ReturnRequest result = patrimonyService.findAll();
 		return result;
 	}
 	
@@ -37,23 +37,23 @@ public class BrandController
 	@ResponseStatus(HttpStatus.OK)
 	public ReturnRequest findOne(@PathVariable Long id) 
 	{
-		ReturnRequest result = brandService.findOne(id);
+		ReturnRequest result = patrimonyService.findOne(id);
 		return result;
 	}
 
 	@PostMapping({"/", ""})
 	@ResponseStatus(HttpStatus.CREATED)
-	public ReturnRequest insert(@Valid @RequestBody BrandDTO brand)
+	public ReturnRequest insert(@Valid @RequestBody PatrimonyDTO patrimony)
 	{
-		ReturnRequest result = brandService.insert(brand);
+		ReturnRequest result = patrimonyService.insert(patrimony);
 		return result;
 	}
 	
 	@PutMapping({"/{id}/", "/{id}"})
 	@ResponseStatus(HttpStatus.OK)
-	public ReturnRequest update(@Valid @PathVariable Long id, @RequestBody BrandDTO brand) 
+	public ReturnRequest update(@Valid @PathVariable Long id, @RequestBody PatrimonyDTO patrimony) 
 	{
-		ReturnRequest result = brandService.update(id, brand);
+		ReturnRequest result = patrimonyService.update(id, patrimony);
 		return result;
 	}
 	
@@ -61,7 +61,7 @@ public class BrandController
 	@ResponseStatus(HttpStatus.OK)
 	public ReturnRequest delete(@PathVariable Long id) 
 	{
-		ReturnRequest result = brandService.delete(id);
+		ReturnRequest result = patrimonyService.delete(id);
 		return result;
 	}
 }

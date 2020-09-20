@@ -9,37 +9,42 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import com.webvirtua.patrimony.app.dto.BrandDTO;
+import com.webvirtua.patrimony.app.dto.PatrimonyDTO;
 import com.webvirtua.patrimony.app.model.Brand;
+import com.webvirtua.patrimony.app.model.Patrimony;
 import com.webvirtua.patrimony.app.repository.BrandRepository;
+import com.webvirtua.patrimony.app.repository.PatrimonyRepository;
 import com.webvirtua.patrimony.app.resources.utils.ReturnRequest;
 
 @Service
-public class BrandService 
+public class PatrimonyService 
 {
 	private ModelMapper modelMapper;
 	
-	public BrandService(ModelMapper modelMapper) 
+	public PatrimonyService(ModelMapper modelMapper) 
 	{
 		this.modelMapper = modelMapper;
 	}
 
 	@Autowired
-	private BrandRepository brandRepository;
+	private PatrimonyRepository patrimonyRepository;
+	
+	@Autowired
+	private BrandRepository brand;
 	
 	public ReturnRequest findAll() 
 	{
-		List<Brand> brands = brandRepository.findAll();
+		List<Patrimony> patrimony = patrimonyRepository.findAll();
 
 		ReturnRequest resultRequest = ReturnRequest.builder()
 				.success(1)
 				.status(200)
-				.totalResults(brands.size())
+				.totalResults(patrimony.size())
 				.resultsPerPage(0)
 				.totalPages(0)
 				.page(0)
 				.successMessage("Resultados Obtidos")
-				.data(brands)
+				.data(patrimony)
 				.build();
 		
 		ResponseEntity.ok();
@@ -49,15 +54,15 @@ public class BrandService
 	
 	public ReturnRequest findOne(Long id) 
 	{
-		Optional<Brand> brand = brandRepository.findById(id);
+		Optional<Patrimony> patrimony = patrimonyRepository.findById(id);
 		
-		if (brand.equals(brand)) {
+		if (patrimony.equals(patrimony)) {
 			ReturnRequest resultRequest = ReturnRequest.builder()
 					.success(1)
 					.status(200)
 					.totalResults(1)
 					.successMessage("Resultados Obtidos")
-					.data(Arrays.asList(brand))
+					.data(Arrays.asList(patrimony))
 					.build();
 			
 			ResponseEntity.ok();
@@ -77,33 +82,23 @@ public class BrandService
 		return resultRequest;
 	}
 	
-	public ReturnRequest insert(BrandDTO brand) 
-	{
-		Brand brandExist = brandRepository.findByName(brand.getName());
+	public ReturnRequest insert(PatrimonyDTO patrimony) 
+	{	
+		Patrimony entity = this.modelMapper.map(patrimony, Patrimony.class);
+
+		//Optional<Brand> findBrand = brand.findById(patrimony.getBrand().getId());
+//		EntityManager ent = null;
+//		List<Patrimony> result = ent.createQuery("SELECT p FROM Passenger p ORDER BY p.id DESC", Patrimony.class).setMaxResults(1).getResultList();
 		
-		if (brandExist != null && !brandExist.equals(brand)) {
-			ReturnRequest resultRequest = ReturnRequest.builder()
-					.success(0)
-					.status(200)
-					.errorMessage("Marca já existe na base de dados")
-					.build();
-			
-			ResponseEntity.notFound().build();
-			
-			return resultRequest;
-		}
+		Patrimony patrimonyAdded = patrimonyRepository.save(entity);
 		
-		Brand entity = this.modelMapper.map(brand, Brand.class);
-		
-		Brand brandAdded = brandRepository.save(entity);
-		
-		if (brandAdded.equals(brandAdded)) {
+		if (patrimonyAdded.equals(patrimonyAdded)) {
 			ReturnRequest resultRequest = ReturnRequest.builder()
 					.success(1)
 					.status(200)
 					.totalResults(1)
-					.successMessage("Marca inserida com sucesso")
-					.data(Arrays.asList(brandAdded))
+					.successMessage("Patrimônio inserido com sucesso")
+					.data(Arrays.asList(patrimonyAdded))
 					.build();
 			
 			ResponseEntity.ok();
@@ -123,31 +118,17 @@ public class BrandService
 		return resultRequest;
 	}
 	
-	public ReturnRequest update(Long id, BrandDTO brand) 
+	public ReturnRequest update(Long id, PatrimonyDTO patrimony) 
 	{
-		brand.setId(id);
+		patrimony.setId(id);
 		
-		Brand entity = this.modelMapper.map(brand, Brand.class);
+		Patrimony entity = this.modelMapper.map(patrimony, Patrimony.class);
 		
-		if (!brandRepository.existsById(id)) {
+		if (!patrimonyRepository.existsById(id)) {
 			ReturnRequest resultRequest = ReturnRequest.builder()
 					.success(0)
 					.status(200)
-					.errorMessage("Marca não existe na base de dados")
-					.build();
-			
-			ResponseEntity.notFound().build();
-			
-			return resultRequest;
-		}
-		
-		Brand brandExist = brandRepository.findByName(brand.getName());
-		
-		if (brandExist != null && (brand.getId() != brandExist.getId())) {
-			ReturnRequest resultRequest = ReturnRequest.builder()
-					.success(0)
-					.status(200)
-					.errorMessage("Marca está cadastrada em outro registro na base de dados")
+					.errorMessage("Patrimonio não existe na base de dados")
 					.build();
 			
 			ResponseEntity.notFound().build();
@@ -155,15 +136,15 @@ public class BrandService
 			return resultRequest;
 		}
 
-		Brand userUpdated = brandRepository.save(entity);
+		Patrimony patrimonyUpdated = patrimonyRepository.save(entity);
 		
-		if (userUpdated.equals(userUpdated)) {
+		if (patrimonyUpdated.equals(patrimonyUpdated)) {
 			ReturnRequest resultRequest = ReturnRequest.builder()
 					.success(1)
 					.status(200)
 					.totalResults(1)
-					.successMessage("Marca alterada com sucesso")
-					.data(Arrays.asList(userUpdated))
+					.successMessage("Patrimonio alterado com sucesso")
+					.data(Arrays.asList(patrimonyUpdated))
 					.build();
 			
 			ResponseEntity.ok();
@@ -185,11 +166,11 @@ public class BrandService
 	
 	public ReturnRequest delete(Long id) 
 	{
-		if (!brandRepository.existsById(id)) {
+		if (!patrimonyRepository.existsById(id)) {
 			ReturnRequest resultRequest = ReturnRequest.builder()
 					.success(0)
 					.status(200)
-					.errorMessage("Marca não existe na base de dados")
+					.errorMessage("Patrimonio não existe na base de dados")
 					.build();
 			
 			ResponseEntity.notFound().build();
@@ -197,13 +178,13 @@ public class BrandService
 			return resultRequest;
 		}
 		
-		brandRepository.deleteById(id);
+		patrimonyRepository.deleteById(id);
 		
 		ReturnRequest resultRequest = ReturnRequest.builder()
 				.success(1)
 				.status(200)
 				.totalResults(1)
-				.successMessage("Marca excluída com sucesso")
+				.successMessage("Patrimonio excluído com sucesso")
 				.errorMessage("")
 				.build();
 		
