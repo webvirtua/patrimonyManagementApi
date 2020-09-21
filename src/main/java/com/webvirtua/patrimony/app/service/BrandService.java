@@ -113,7 +113,7 @@ public class BrandService
 		if (brandAdded.equals(brandAdded)) {
 			ReturnRequest resultRequest = ReturnRequest.builder()
 					.success(1)
-					.status(200)
+					.status(201)
 					.totalResults(1)
 					.successMessage("Marca inserida com sucesso")
 					.data(Arrays.asList(brandAdded))

@@ -18,9 +18,9 @@ IDE: Spring Tool Suite 4
 Clone o repositório
 
 ```
-git clone https://github.com/webvirtua/StartSpring.git
+git clone https://github.com/webvirtua/patrimonyManagementApi.git
 ```
-Crie a base de dados postgres com o nome patrimony
+Crie a base de dados postgres com o nome patrimony.
 
 ```
 create database patrimony;

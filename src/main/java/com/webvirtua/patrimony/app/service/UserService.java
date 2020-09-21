@@ -136,7 +136,7 @@ public class UserService
 			return resultRequest;
 		}
 		
-		String passwordHash = passwordEncoder.encode(user.getPassword());
+		//String passwordHash = passwordEncoder.encode(user.getPassword());
 		//user.setPassword(passwordHash);
 		
 		User entity = this.modelMapper.map(user, User.class);
@@ -146,7 +146,7 @@ public class UserService
 		if (userAdded.equals(userAdded)) {
 			ReturnRequest resultRequest = ReturnRequest.builder()
 					.success(1)
-					.status(200)
+					.status(201)
 					.totalResults(1)
 					.successMessage("Usuário inserido com sucesso")
 					.data(Arrays.asList(userAdded))

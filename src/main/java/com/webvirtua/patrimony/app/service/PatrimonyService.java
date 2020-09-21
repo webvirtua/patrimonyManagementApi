@@ -159,7 +159,11 @@ public class PatrimonyService
 	
 	public ReturnRequest update(Long id, PatrimonyDTO patrimony) 
 	{
+		Optional<Patrimony> getPatrimony = patrimonyRepository.findById(id);
+		Long tumble = getPatrimony.get().getTumble();
+		
 		patrimony.setId(id);
+		patrimony.setTumble(tumble);
 		
 		Patrimony entity = this.modelMapper.map(patrimony, Patrimony.class);
 		
@@ -183,7 +187,7 @@ public class PatrimonyService
 					.status(200)
 					.totalResults(1)
 					.successMessage("Patrimonio alterado com sucesso")
-					.data(Arrays.asList(patrimonyUpdated))
+					.data(Arrays.asList(patrimonyUpdated, tumble))
 					.build();
 			
 			ResponseEntity.ok();
