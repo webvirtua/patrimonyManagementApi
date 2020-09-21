@@ -79,6 +79,19 @@ public class BrandService
 	
 	public ReturnRequest insert(BrandDTO brand) 
 	{
+		if (brand.getName() == null) {
+			ReturnRequest resultRequest = ReturnRequest.builder()
+					.success(1)
+					.status(200)
+					.totalResults(1)
+					.errorMessage("É obrigatório enviar o nome da marca no corpo da requisição.")
+					.build();
+			
+			ResponseEntity.ok();
+			
+			return resultRequest;
+		}
+		
 		Brand brandExist = brandRepository.findByName(brand.getName());
 		
 		if (brandExist != null && !brandExist.equals(brand)) {

@@ -79,6 +79,45 @@ public class UserService
 	
 	public ReturnRequest insert(UserDTO user) 
 	{
+		if (user.getName() == null) {
+			ReturnRequest resultRequest = ReturnRequest.builder()
+					.success(1)
+					.status(200)
+					.totalResults(1)
+					.errorMessage("É obrigatório enviar o nome do cliente no corpo da requisição.")
+					.build();
+			
+			ResponseEntity.ok();
+			
+			return resultRequest;
+		}
+		
+		if (user.getEmail() == null) {
+			ReturnRequest resultRequest = ReturnRequest.builder()
+					.success(1)
+					.status(200)
+					.totalResults(1)
+					.errorMessage("É obrigatório enviar o e-mail do cliente no corpo da requisição.")
+					.build();
+			
+			ResponseEntity.ok();
+			
+			return resultRequest;
+		}
+		
+		if (user.getPassword() == null) {
+			ReturnRequest resultRequest = ReturnRequest.builder()
+					.success(1)
+					.status(200)
+					.totalResults(1)
+					.errorMessage("É obrigatório enviar a senha do cliente no corpo da requisição.")
+					.build();
+			
+			ResponseEntity.ok();
+			
+			return resultRequest;
+		}
+		
 		User emailExist = userRepository.findByEmail(user.getEmail());
 		
 		if (emailExist != null && !emailExist.equals(user)) {

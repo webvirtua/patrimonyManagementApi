@@ -4,6 +4,9 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +21,9 @@ import com.webvirtua.patrimony.app.resources.utils.ReturnRequest;
 public class PatrimonyService 
 {
 	private ModelMapper modelMapper;
+	
+	@PersistenceContext
+	private EntityManager con;
 	
 	public PatrimonyService(ModelMapper modelMapper) 
 	{
@@ -79,9 +85,41 @@ public class PatrimonyService
 	
 	public ReturnRequest insert(PatrimonyDTO patrimony) 
 	{	
-		Patrimony entity = this.modelMapper.map(patrimony, Patrimony.class);
+		List<?> lastPatrimony = con.createQuery("SELECT p.id FROM Patrimony p ORDER BY p.id DESC").setMaxResults(1).getResultList(); 
 		
-		//BCry
+		if (lastPatrimony.size() > 0) {
+			patrimony.setTumble((Long)lastPatrimony.get(0) + 1);
+		} else {
+			patrimony.setTumble(1L);
+		}
+		
+		Patrimony entity = this.modelMapper.map(patrimony, Patrimony.class);
+
+		if (!(patrimony.getBrand().getId() > 0)) {
+			ReturnRequest resultRequest = ReturnRequest.builder()
+					.success(1)
+					.status(200)
+					.totalResults(1)
+					.errorMessage("É obrigatório enviar o ID da marca no corpo da requisição.")
+					.build();
+			
+			ResponseEntity.ok();
+			
+			return resultRequest;
+		}
+		
+		if (patrimony.getName() == null) {
+			ReturnRequest resultRequest = ReturnRequest.builder()
+					.success(1)
+					.status(200)
+					.totalResults(1)
+					.errorMessage("É obrigatório enviar o nome do patrimônio no corpo da requisição.")
+					.build();
+			
+			ResponseEntity.ok();
+			
+			return resultRequest;
+		}
 
 		Patrimony patrimonyAdded = patrimonyRepository.save(entity);
 		
@@ -91,7 +129,7 @@ public class PatrimonyService
 					.status(200)
 					.totalResults(1)
 					.successMessage("Patrimônio inserido com sucesso")
-					.data(Arrays.asList(patrimonyAdded))
+					.data(Arrays.asList(patrimonyAdded, lastPatrimony.get(0)))
 					.build();
 			
 			ResponseEntity.ok();
