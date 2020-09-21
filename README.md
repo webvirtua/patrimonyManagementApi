@@ -30,6 +30,12 @@ create database patrimony;
 3. Selecione o diretório e finish
 4. Clique com obotão direito no projeto e run > java application
 
+## Obter Autorização
+Utilizado Basic Auth para autorização.<br>
+Digite as credenciais para obter autorização:<br>
+Username: **luiz**<br>
+Password: **123**<br>
+
 ## Acesso aos Recursos
 
 ### Patrimônio

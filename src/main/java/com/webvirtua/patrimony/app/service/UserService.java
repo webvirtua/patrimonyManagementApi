@@ -7,6 +7,7 @@ import java.util.Optional;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.webvirtua.patrimony.app.dto.UserDTO;
@@ -26,6 +27,9 @@ public class UserService
 	
 	@Autowired
 	private UserRepository userRepository;
+	
+	@Autowired
+	private PasswordEncoder passwordEncoder;
 	
 	public ReturnRequest findAll() 
 	{
@@ -132,6 +136,9 @@ public class UserService
 			return resultRequest;
 		}
 		
+		String passwordHash = passwordEncoder.encode(user.getPassword());
+		//user.setPassword(passwordHash);
+		
 		User entity = this.modelMapper.map(user, User.class);
 		
 		User userAdded = userRepository.save(entity);
@@ -142,7 +149,7 @@ public class UserService
 					.status(200)
 					.totalResults(1)
 					.successMessage("Usuário inserido com sucesso")
-					.data(Arrays.asList(userAdded))
+					.data(Arrays.asList(userAdded, passwordHash))
 					.build();
 			
 			ResponseEntity.ok();

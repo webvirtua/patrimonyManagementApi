@@ -129,7 +129,7 @@ public class PatrimonyService
 					.status(200)
 					.totalResults(1)
 					.successMessage("Patrimônio inserido com sucesso")
-					.data(Arrays.asList(patrimonyAdded, lastPatrimony.get(0)))
+					.data(Arrays.asList(patrimonyAdded))
 					.build();
 			
 			ResponseEntity.ok();
