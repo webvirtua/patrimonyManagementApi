@@ -10,9 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.webvirtua.patrimony.app.dto.PatrimonyDTO;
-import com.webvirtua.patrimony.app.model.Brand;
 import com.webvirtua.patrimony.app.model.Patrimony;
-import com.webvirtua.patrimony.app.repository.BrandRepository;
 import com.webvirtua.patrimony.app.repository.PatrimonyRepository;
 import com.webvirtua.patrimony.app.resources.utils.ReturnRequest;
 
@@ -28,9 +26,6 @@ public class PatrimonyService
 
 	@Autowired
 	private PatrimonyRepository patrimonyRepository;
-	
-	@Autowired
-	private BrandRepository brand;
 	
 	public ReturnRequest findAll() 
 	{
@@ -85,11 +80,9 @@ public class PatrimonyService
 	public ReturnRequest insert(PatrimonyDTO patrimony) 
 	{	
 		Patrimony entity = this.modelMapper.map(patrimony, Patrimony.class);
-
-		//Optional<Brand> findBrand = brand.findById(patrimony.getBrand().getId());
-//		EntityManager ent = null;
-//		List<Patrimony> result = ent.createQuery("SELECT p FROM Passenger p ORDER BY p.id DESC", Patrimony.class).setMaxResults(1).getResultList();
 		
+		//BCry
+
 		Patrimony patrimonyAdded = patrimonyRepository.save(entity);
 		
 		if (patrimonyAdded.equals(patrimonyAdded)) {

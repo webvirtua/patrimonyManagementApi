@@ -10,7 +10,6 @@ public class StartApplication
 {
 	@Bean
 	public ModelMapper modelMapper() {
-		// instancia singleton modelMapper que pode ser usada em toda a aplicação
 		return new ModelMapper();
 	}
 	
