@@ -17,7 +17,7 @@ public class PatrimonyDTO
 {
 	private Long id;
 	private String name;
-	private int tumble;
+	//private int tumble;
 	private String description;
 	private Brand brand;
 }

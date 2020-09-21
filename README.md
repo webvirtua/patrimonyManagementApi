@@ -11,6 +11,8 @@ Lombok
 Model Mapper
 Spring Security<br>
 
+IDE: Spring Tool Suite 4
+
 
 ## Iniciando o projeto
 Clone o repositório
@@ -23,56 +25,107 @@ Crie a base de dados postgres com o nome patrimony
 ```
 create database patrimony;
 ```
-1. Import como Existing Maven Projects
-2. Selecione o diretório e finish
-3. Clique com obotão direito no projeto e run > java application
+1. Instale o lombok na IDE
+2. Import como Existing Maven Projects
+3. Selecione o diretório e finish
+4. Clique com obotão direito no projeto e run > java application
 
 ## Acesso aos Recursos
 
 ### Patrimônio
 GET Recebe um ID como parâmetro e retorna um patrimônios buscando pelo ID.<br>
-http://localhost:8080/v1/patrimony/{id}
+**/v1/patrimony/{id}**
 
 GET Retorna uma lista com todos os patrimônios cadastrados.<br>
-http://localhost:8080/v1/patrimony
+**/v1/patrimony**
 
 POST Recebes os dados na requisição e insere um patrimônio.<br>
-http://localhost:8080/v1/patrimony
+**/v1/patrimony**
+
+```
+{
+    "brand": {
+        "id": {id}
+    },
+    "name": "Nome do Patrimônio",
+    "description": "Descrição"
+}
+```
 
 PUT Recebe um ID e os dados na requisição como parâmetro e atualiza um patrimônio.<br>
-http://localhost:8080/v1/patrimony/{id}
+**/v1/patrimony/{id}**
+
+```
+{
+    "brand": {
+        "id": {id}
+    },
+    "name": "Nome do Patrimônio",
+    "description": "Descrição"
+}
+```
 
 DELETE Recebe um ID como parâmetro e deleta um patrimônio.<br>
-http://localhost:8080/v1/patrimony/{id}
+**/v1/patrimony/{id}**
 
 ### Marca
 GET Recebe um ID como parâmetro e retorna uma marca buscando pelo ID.<br>
-http://localhost:8080/v1/brands/{id}
+**/v1/brands/{id}**
 
 GET Retorna uma lista com todos as marcas cadastradas.<br>
-http://localhost:8080/v1/brands
+**/v1/brands**
 
 POST Recebes os dados na requisição e insere uma marca.<br>
-http://localhost:8080/v1/brands
+**/v1/brands**
 
-PUT Recebe um ID e os dados na requisição como parâmetro e atualiza uma marca.<br>
-http://localhost:8080/v1/brands/{id}
+```
+{
+    "name": "Marca"
+}
+```
+
+PUT Recebe um ID e os dados na requisição como parâmetro e atualiza uma marca. ID da marca é opcional na atualização<br>
+**/v1/brands/{id}**
+
+```
+{
+    "name": "Marca"
+}
+```
 
 DELETE Recebe um ID como parâmetro e deleta uma marca.<br>
-http://localhost:8080/v1/brands/{id}
+**/v1/brands/{id}**
 
 ### Usuário
 GET Recebe um ID como parâmetro e retorna um usuário buscando pelo ID.<br>
-http://localhost:8080/v1/clients/{id}
+**/v1/clients/{id}**
 
 GET Retorna uma lista com todos os usuários cadastrados.<br>
-http://localhost:8080/v1/clients
+**/v1/clients**
 
 POST Recebes os dados na requisição e insere um usuário.<br>
-http://localhost:8080/v1/clients
+**/v1/clients**
+
+```
+{
+    "name": "Nome da Pessoa",
+    "email": "email@pes.com",
+    "password": "123"
+}
+```
 
 PUT Recebe um ID e os dados na requisição como parâmetro e atualiza um usuário.<br>
-http://localhost:8080/v1/clients/{id}
+**/v1/clients/{id}**
+
+```
+{
+    "name": "Nome da Pessoa",
+    "email": "email@pes.com",
+    "password": "123"
+}
+```
 
 DELETE Recebe um ID como parâmetro e deleta um usuário.<br>
-http://localhost:8080/v1/clients/{id}
+**/v1/clients/{id}**
+
+
