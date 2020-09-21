@@ -19,7 +19,7 @@ import com.webvirtua.patrimony.app.resources.utils.ReturnRequest;
 import com.webvirtua.patrimony.app.service.UserService;
 
 @RestController
-@RequestMapping("/v1/clients")
+@RequestMapping("/v1/users")
 public class UserController 
 {
 	@Autowired 

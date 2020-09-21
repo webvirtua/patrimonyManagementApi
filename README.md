@@ -104,13 +104,13 @@ DELETE Recebe um ID como parâmetro e deleta uma marca.<br>
 
 ### Usuário
 GET Recebe um ID como parâmetro e retorna um usuário buscando pelo ID.<br>
-**/v1/clients/{id}**
+**/v1/users/{id}**
 
 GET Retorna uma lista com todos os usuários cadastrados.<br>
-**/v1/clients**
+**/v1/users**
 
-POST Recebes os dados na requisição e insere um usuário.<br>
-**/v1/clients**
+POST Recebes os dados na requisição e insere um usuário. Este recurso não necessita de autenticação.<br>
+**/v1/users**
 
 ```
 {
@@ -121,7 +121,7 @@ POST Recebes os dados na requisição e insere um usuário.<br>
 ```
 
 PUT Recebe um ID e os dados na requisição como parâmetro e atualiza um usuário.<br>
-**/v1/clients/{id}**
+**/v1/users/{id}**
 
 ```
 {
@@ -132,6 +132,6 @@ PUT Recebe um ID e os dados na requisição como parâmetro e atualiza um usuár
 ```
 
 DELETE Recebe um ID como parâmetro e deleta um usuário.<br>
-**/v1/clients/{id}**
+**/v1/users/{id}**
 
 

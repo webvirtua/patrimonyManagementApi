@@ -13,7 +13,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.webvirtua.patrimony.app.dto.PatrimonyDTO;
+import com.webvirtua.patrimony.app.model.Brand;
 import com.webvirtua.patrimony.app.model.Patrimony;
+import com.webvirtua.patrimony.app.repository.BrandRepository;
 import com.webvirtua.patrimony.app.repository.PatrimonyRepository;
 import com.webvirtua.patrimony.app.resources.utils.ReturnRequest;
 
@@ -32,6 +34,9 @@ public class PatrimonyService
 
 	@Autowired
 	private PatrimonyRepository patrimonyRepository;
+	
+	@Autowired
+	private BrandRepository brandRepository;
 	
 	public ReturnRequest findAll() 
 	{
@@ -124,9 +129,12 @@ public class PatrimonyService
 		Patrimony patrimonyAdded = patrimonyRepository.save(entity);
 		
 		if (patrimonyAdded.equals(patrimonyAdded)) {
+			Optional<Brand> brand = brandRepository.findById(patrimonyAdded.getBrand().getId());
+			patrimonyAdded.setBrand(brand.get());
+			
 			ReturnRequest resultRequest = ReturnRequest.builder()
 					.success(1)
-					.status(200)
+					.status(201)
 					.totalResults(1)
 					.successMessage("Patrimônio inserido com sucesso")
 					.data(Arrays.asList(patrimonyAdded))

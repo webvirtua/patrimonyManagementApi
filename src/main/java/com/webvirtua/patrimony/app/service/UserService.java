@@ -149,7 +149,7 @@ public class UserService
 					.status(200)
 					.totalResults(1)
 					.successMessage("Usuário inserido com sucesso")
-					.data(Arrays.asList(userAdded, passwordHash))
+					.data(Arrays.asList(userAdded))
 					.build();
 			
 			ResponseEntity.ok();
