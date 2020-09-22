@@ -9,10 +9,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import com.webvirtua.patrimony.app.core.utils.ReturnRequest;
 import com.webvirtua.patrimony.app.dto.BrandDTO;
 import com.webvirtua.patrimony.app.model.Brand;
 import com.webvirtua.patrimony.app.repository.BrandRepository;
-import com.webvirtua.patrimony.app.resources.utils.ReturnRequest;
 
 @Service
 public class BrandService 

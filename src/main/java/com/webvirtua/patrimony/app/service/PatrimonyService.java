@@ -12,12 +12,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import com.webvirtua.patrimony.app.core.utils.ReturnRequest;
 import com.webvirtua.patrimony.app.dto.PatrimonyDTO;
 import com.webvirtua.patrimony.app.model.Brand;
 import com.webvirtua.patrimony.app.model.Patrimony;
 import com.webvirtua.patrimony.app.repository.BrandRepository;
 import com.webvirtua.patrimony.app.repository.PatrimonyRepository;
-import com.webvirtua.patrimony.app.resources.utils.ReturnRequest;
 
 @Service
 public class PatrimonyService 

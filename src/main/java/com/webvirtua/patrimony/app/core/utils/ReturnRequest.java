@@ -1,4 +1,4 @@
-package com.webvirtua.patrimony.app.resources.utils;
+package com.webvirtua.patrimony.app.core.utils;
 
 import java.util.List;
 

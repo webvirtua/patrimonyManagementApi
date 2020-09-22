@@ -1,4 +1,4 @@
-package com.webvirtua.patrimony.app.config;
+package com.webvirtua.patrimony.app.core.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;

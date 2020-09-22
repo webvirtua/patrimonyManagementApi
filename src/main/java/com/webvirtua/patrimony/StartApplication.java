@@ -15,7 +15,6 @@ public class StartApplication
 		return new ModelMapper();
 	}
 	
-	//só funciona com o security habilitado
 	@Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();

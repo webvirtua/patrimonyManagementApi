@@ -10,10 +10,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.webvirtua.patrimony.app.core.excepions.NotFoundException;
+import com.webvirtua.patrimony.app.core.utils.ReturnRequest;
 import com.webvirtua.patrimony.app.dto.UserDTO;
 import com.webvirtua.patrimony.app.model.User;
 import com.webvirtua.patrimony.app.repository.UserRepository;
-import com.webvirtua.patrimony.app.resources.utils.ReturnRequest;
 
 @Service
 public class UserService
@@ -83,12 +84,27 @@ public class UserService
 	
 	public ReturnRequest insert(UserDTO user) 
 	{
-		if (user.getName() == null) {
+		try {
+			if (user.getName() == null) {
+				//throw new NotFoundException("Excessão", 1L);
+				throw new NotFoundException("É obrigatório enviar o nome do cliente no corpo da requisição.");
+	//			ReturnRequest resultRequest = ReturnRequest.builder()
+	//					.success(1)
+	//					.status(200)
+	//					.totalResults(1)
+	//					.errorMessage("É obrigatório enviar o nome do cliente no corpo da requisição.")
+	//					.build();
+	//			
+	//			ResponseEntity.ok();
+	//			
+	//			return resultRequest;
+			}
+		} catch (Exception e) {
 			ReturnRequest resultRequest = ReturnRequest.builder()
 					.success(1)
 					.status(200)
 					.totalResults(1)
-					.errorMessage("É obrigatório enviar o nome do cliente no corpo da requisição.")
+					.errorMessage(e.getMessage())
 					.build();
 			
 			ResponseEntity.ok();

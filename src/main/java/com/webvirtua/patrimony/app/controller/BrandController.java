@@ -14,8 +14,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.webvirtua.patrimony.app.core.utils.ReturnRequest;
 import com.webvirtua.patrimony.app.dto.BrandDTO;
-import com.webvirtua.patrimony.app.resources.utils.ReturnRequest;
 import com.webvirtua.patrimony.app.service.BrandService;
 
 @RestController
