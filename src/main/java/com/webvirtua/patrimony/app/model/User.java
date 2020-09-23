@@ -23,7 +23,7 @@ import lombok.NoArgsConstructor;
 public class User 
 {
 	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
+	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="seq_id_user")
 	private Long id;
 	
 	@NotBlank
@@ -36,6 +36,6 @@ public class User
 	private String email;
 	
 	@NotBlank
-	@Size(max = 30)
+	@Size(max = 255)
 	private String password;
 }

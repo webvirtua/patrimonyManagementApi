@@ -1,20 +1,20 @@
 package com.webvirtua.patrimony.app.service;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.webvirtua.patrimony.app.core.excepions.NotFoundException;
+import com.webvirtua.patrimony.app.core.excepions.RunTimeException;
 import com.webvirtua.patrimony.app.core.utils.ReturnRequest;
 import com.webvirtua.patrimony.app.dto.UserDTO;
 import com.webvirtua.patrimony.app.model.User;
 import com.webvirtua.patrimony.app.repository.UserRepository;
+
+import com.webvirtua.patrimony.app.core.utils.Status;
 
 @Service
 public class UserService
@@ -28,9 +28,12 @@ public class UserService
 	
 	@Autowired
 	private UserRepository userRepository;
-	
+
 	@Autowired
 	private PasswordEncoder passwordEncoder;
+	
+	@Autowired
+	private Status status;
 	
 	public ReturnRequest findAll() 
 	{
@@ -38,7 +41,7 @@ public class UserService
 
 		ReturnRequest resultRequest = ReturnRequest.builder()
 				.success(1)
-				.status(200)
+				.status(status.getCode200())
 				.totalResults(users.size())
 				.resultsPerPage(0)
 				.totalPages(0)
@@ -47,8 +50,6 @@ public class UserService
 				.data(users)
 				.build();
 		
-		ResponseEntity.ok();
-		
 		return resultRequest;
 	}
 	
@@ -56,220 +57,88 @@ public class UserService
 	{
 		Optional<User> user = userRepository.findById(id);
 		
-		if (user.equals(user)) {
-			ReturnRequest resultRequest = ReturnRequest.builder()
-					.success(1)
-					.status(200)
-					.totalResults(1)
-					.successMessage("Resultados Obtidos")
-					.data(Arrays.asList(user))
-					.build();
-			
-			ResponseEntity.ok();
-			
-			return resultRequest;
-		}
-
 		ReturnRequest resultRequest = ReturnRequest.builder()
-				.success(0)
-				.status(400)
-				.totalResults(0)
-				.errorMessage("Sem Resultados")
+				.success(1)
+				.status(status.getCode200())
+				.totalResults(1)
+				.successMessage("Resultados Obtidos")
+				.data(user)
 				.build();
 		
-		ResponseEntity.notFound().build();
-
 		return resultRequest;
 	}
 	
 	public ReturnRequest insert(UserDTO user) 
 	{
-		try {
-			if (user.getName() == null) {
-				//throw new NotFoundException("Excessão", 1L);
-				throw new NotFoundException("É obrigatório enviar o nome do cliente no corpo da requisição.");
-	//			ReturnRequest resultRequest = ReturnRequest.builder()
-	//					.success(1)
-	//					.status(200)
-	//					.totalResults(1)
-	//					.errorMessage("É obrigatório enviar o nome do cliente no corpo da requisição.")
-	//					.build();
-	//			
-	//			ResponseEntity.ok();
-	//			
-	//			return resultRequest;
-			}
-		} catch (Exception e) {
-			ReturnRequest resultRequest = ReturnRequest.builder()
-					.success(1)
-					.status(200)
-					.totalResults(1)
-					.errorMessage(e.getMessage())
-					.build();
-			
-			ResponseEntity.ok();
-			
-			return resultRequest;
-		}
-		
-		if (user.getEmail() == null) {
-			ReturnRequest resultRequest = ReturnRequest.builder()
-					.success(1)
-					.status(200)
-					.totalResults(1)
-					.errorMessage("É obrigatório enviar o e-mail do cliente no corpo da requisição.")
-					.build();
-			
-			ResponseEntity.ok();
-			
-			return resultRequest;
-		}
-		
-		if (user.getPassword() == null) {
-			ReturnRequest resultRequest = ReturnRequest.builder()
-					.success(1)
-					.status(200)
-					.totalResults(1)
-					.errorMessage("É obrigatório enviar a senha do cliente no corpo da requisição.")
-					.build();
-			
-			ResponseEntity.ok();
-			
-			return resultRequest;
-		}
-		
 		User emailExist = userRepository.findByEmail(user.getEmail());
 		
 		if (emailExist != null && !emailExist.equals(user)) {
-			ReturnRequest resultRequest = ReturnRequest.builder()
-					.success(0)
-					.status(200)
-					.errorMessage("E-mail já existe na base de dados")
-					.build();
-			
-			ResponseEntity.notFound().build();
-			
-			return resultRequest;
+			throw new RunTimeException("E-mail já existe na base de dados.");
 		}
-		
-		//String passwordHash = passwordEncoder.encode(user.getPassword());
-		//user.setPassword(passwordHash);
+
+		String passwordHash = passwordEncoder.encode(user.getPassword());
+		user.setPassword(passwordHash);
 		
 		User entity = this.modelMapper.map(user, User.class);
 		
 		User userAdded = userRepository.save(entity);
 		
-		if (userAdded.equals(userAdded)) {
-			ReturnRequest resultRequest = ReturnRequest.builder()
-					.success(1)
-					.status(201)
-					.totalResults(1)
-					.successMessage("Usuário inserido com sucesso")
-					.data(Arrays.asList(userAdded))
-					.build();
-			
-			ResponseEntity.ok();
-			
-			return resultRequest;
-		}
-		
 		ReturnRequest resultRequest = ReturnRequest.builder()
-				.success(0)
-				.status(400)
+				.success(1)
+				.status(status.getCode201())
 				.totalResults(1)
-				.errorMessage("Ocorreu um erro")
+				.successMessage("Usuário inserido com sucesso")
+				.data(userAdded)
 				.build();
-		
-		ResponseEntity.notFound().build();
-		
+
 		return resultRequest;
 	}
 	
 	public ReturnRequest update(Long id, UserDTO user) 
 	{
-		user.setId(id);
-		
-		User entity = this.modelMapper.map(user, User.class);
-		
 		if (!userRepository.existsById(id)) {
-			ReturnRequest resultRequest = ReturnRequest.builder()
-					.success(0)
-					.status(200)
-					.errorMessage("Usuário não existe na base de dados")
-					.build();
-			
-			ResponseEntity.notFound().build();
-			
-			return resultRequest;
+			throw new RunTimeException("Usuário não existe na base de dados.");
 		}
 		
 		User emailExist = userRepository.findByEmail(user.getEmail());
 		
-		if (emailExist != null && (user.getId() != emailExist.getId())) {
-			ReturnRequest resultRequest = ReturnRequest.builder()
-					.success(0)
-					.status(200)
-					.errorMessage("E-mail pertence a outro usuário na base de dados")
-					.build();
-			
-			ResponseEntity.notFound().build();
-			
-			return resultRequest;
+		if (emailExist != null && (id != emailExist.getId())) {
+			throw new RunTimeException("E-mail pertence a outro usuário na base de dados.");
 		}
+		
+		user.setId(id);
+		
+		String passwordHash = passwordEncoder.encode(user.getPassword());
+		user.setPassword(passwordHash);
+		
+		User entity = this.modelMapper.map(user, User.class);
 		
 		User userUpdated = userRepository.save(entity);
 		
-		if (userUpdated.equals(userUpdated)) {
-			ReturnRequest resultRequest = ReturnRequest.builder()
-					.success(1)
-					.status(200)
-					.totalResults(1)
-					.successMessage("Usuário alterado com sucesso")
-					.data(Arrays.asList(userUpdated))
-					.build();
-			
-			ResponseEntity.ok();
-			
-			return resultRequest;
-		}
-		
 		ReturnRequest resultRequest = ReturnRequest.builder()
-				.success(0)
-				.status(400)
-				.totalResults(0)
-				.errorMessage("Ocorreu um erro")
+				.success(1)
+				.status(status.getCode200())
+				.totalResults(1)
+				.successMessage("Usuário alterado com sucesso")
+				.data(userUpdated)
 				.build();
-		
-		ResponseEntity.notFound().build();
 		
 		return resultRequest;
 	}
 	
 	public ReturnRequest delete(Long id) 
-	{
+	{	
 		if (!userRepository.existsById(id)) {
-			ReturnRequest resultRequest = ReturnRequest.builder()
-					.success(0)
-					.status(200)
-					.errorMessage("Usuário não existe na base de dados")
-					.build();
-			
-			ResponseEntity.notFound().build();
-			
-			return resultRequest;
+			throw new RunTimeException("Usuário não existe na base de dados.");
 		}
 		
 		userRepository.deleteById(id);
 		
 		ReturnRequest resultRequest = ReturnRequest.builder()
 				.success(1)
-				.status(200)
-				.totalResults(1)
+				.status(status.getCode200())
 				.successMessage("Usuário excluído com sucesso")
-				.errorMessage("")
 				.build();
-		
-		ResponseEntity.ok();
 		
 		return resultRequest;
 	}

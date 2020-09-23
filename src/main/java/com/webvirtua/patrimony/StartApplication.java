@@ -11,12 +11,14 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 public class StartApplication 
 {
 	@Bean
-	public ModelMapper modelMapper() {
+	public ModelMapper modelMapper() 
+	{
 		return new ModelMapper();
 	}
 	
 	@Bean
-    public PasswordEncoder passwordEncoder() {
+    public PasswordEncoder passwordEncoder() 
+	{
         return new BCryptPasswordEncoder();
 	}
 	

@@ -25,5 +25,5 @@ public class ReturnRequest
 	private String successMessage;
 	private String errorMessage;
 	private List<?> validationsErrosMessage;
-	private List<?> data;
+	private Object data;
 }

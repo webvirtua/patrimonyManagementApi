@@ -24,7 +24,7 @@ import lombok.NoArgsConstructor;
 public class Patrimony 
 {
 	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
+	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="seq_id_patrimony")
 	private Long id;
 
 	@ManyToOne

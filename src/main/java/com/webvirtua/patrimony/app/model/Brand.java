@@ -22,7 +22,7 @@ import lombok.NoArgsConstructor;
 public class Brand 
 {
 	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
+	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="seq_id_brand")
 	private Long id;
 	
 	@NotBlank
