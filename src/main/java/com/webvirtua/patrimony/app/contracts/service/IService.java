@@ -4,7 +4,7 @@ import com.webvirtua.patrimony.app.core.utils.ReturnRequest;
 
 public interface IService<C>
 {
-public ReturnRequest findAll();
+	public ReturnRequest findAll();
 	
 	public ReturnRequest findOne(Long id);
 

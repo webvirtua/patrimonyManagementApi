@@ -9,6 +9,7 @@ import javax.persistence.PersistenceContext;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.webvirtua.patrimony.app.contracts.service.IService;
 import com.webvirtua.patrimony.app.core.excepions.RunTimeException;
@@ -45,7 +46,7 @@ public class PatrimonyService implements IService<PatrimonyDTO>
 	public ReturnRequest findAll() 
 	{
 		List<Patrimony> patrimony = patrimonyRepository.findAll();
-
+		
 		ReturnRequest resultRequest = ReturnRequest.builder()
 				.success(1)
 				.status(status.getCode200())
@@ -75,11 +76,15 @@ public class PatrimonyService implements IService<PatrimonyDTO>
 		return resultRequest;
 	}
 	
+	@Transactional
 	public ReturnRequest insert(PatrimonyDTO patrimony) 
 	{
 		Patrimony entity = this.modelMapper.map(patrimony, Patrimony.class);
 
 		Patrimony patrimonyAdded = patrimonyRepository.save(entity);
+		
+		patrimonyRepository.updateTumble(patrimonyAdded.getId(), patrimonyAdded.getId());
+		patrimonyAdded.setTumble(patrimonyAdded.getId());
 		
 		Optional<Brand> brand = brandRepository.findById(patrimonyAdded.getBrand().getId());
 		patrimonyAdded.setBrand(brand.get());
@@ -88,7 +93,7 @@ public class PatrimonyService implements IService<PatrimonyDTO>
 				.success(1)
 				.status(status.getCode201())
 				.totalResults(1)
-				.successMessage("Patrimônio inserido com sucesso")
+				.successMessage("Patrimônio inserido com sucesso ")
 				.data(patrimonyAdded)
 				.build();
 
@@ -102,6 +107,7 @@ public class PatrimonyService implements IService<PatrimonyDTO>
 		Patrimony entity = this.modelMapper.map(patrimony, Patrimony.class);
 
 		Patrimony patrimonyUpdated = patrimonyRepository.save(entity);
+		patrimonyUpdated.setTumble(id);
 		
 		ReturnRequest resultRequest = ReturnRequest.builder()
 				.success(1)

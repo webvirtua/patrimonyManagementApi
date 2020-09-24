@@ -19,5 +19,4 @@ public class PatrimonyDTO
 	private String name;
 	private String description;
 	private Brand brand;
-	private String tumble;
 }
