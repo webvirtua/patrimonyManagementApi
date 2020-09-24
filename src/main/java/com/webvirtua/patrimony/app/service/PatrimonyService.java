@@ -10,6 +10,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.webvirtua.patrimony.app.contracts.service.IService;
 import com.webvirtua.patrimony.app.core.excepions.RunTimeException;
 import com.webvirtua.patrimony.app.core.utils.ReturnRequest;
 import com.webvirtua.patrimony.app.core.utils.Status;
@@ -20,7 +21,7 @@ import com.webvirtua.patrimony.app.repository.BrandRepository;
 import com.webvirtua.patrimony.app.repository.PatrimonyRepository;
 
 @Service
-public class PatrimonyService 
+public class PatrimonyService implements IService<PatrimonyDTO>
 {
 	private ModelMapper modelMapper;
 	

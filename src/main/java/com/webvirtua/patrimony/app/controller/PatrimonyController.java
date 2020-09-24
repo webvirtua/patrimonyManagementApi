@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.webvirtua.patrimony.app.contracts.controller.IController;
 import com.webvirtua.patrimony.app.core.excepions.RunTimeException;
 import com.webvirtua.patrimony.app.core.utils.ReturnRequest;
 import com.webvirtua.patrimony.app.core.utils.Status;
@@ -23,7 +24,7 @@ import com.webvirtua.patrimony.app.service.PatrimonyService;
 
 @RestController
 @RequestMapping("/v1/patrimony")
-public class PatrimonyController 
+public class PatrimonyController implements IController<PatrimonyDTO>
 {
 	@Autowired 
 	private PatrimonyService patrimonyService;
@@ -31,7 +32,7 @@ public class PatrimonyController
 	@Autowired
 	private Status status;
 	
-	@GetMapping({"/", ""})
+	@GetMapping
 	@ResponseStatus(HttpStatus.OK)
 	public ReturnRequest findAll() 
 	{
@@ -53,7 +54,7 @@ public class PatrimonyController
 		}
 	}
 	
-	@GetMapping({"/{id}/", "/{id}"})
+	@GetMapping("/{id}")
 	@ResponseStatus(HttpStatus.OK)
 	public ReturnRequest findOne(@PathVariable Long id) 
 	{
@@ -75,7 +76,7 @@ public class PatrimonyController
 		}
 	}
 
-	@PostMapping({"/", ""})
+	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
 	public ReturnRequest insert(@Valid @RequestBody PatrimonyDTO patrimony)
 	{
@@ -100,7 +101,7 @@ public class PatrimonyController
 		}
 	}
 	
-	@PutMapping({"/{id}/", "/{id}"})
+	@PutMapping("/{id}")
 	@ResponseStatus(HttpStatus.OK)
 	public ReturnRequest update(@Valid @PathVariable Long id, @RequestBody PatrimonyDTO patrimony) 
 	{
@@ -125,7 +126,7 @@ public class PatrimonyController
 		}
 	}
 	
-	@DeleteMapping({"/{id}/", "/{id}"})
+	@DeleteMapping("/{id}")
 	@ResponseStatus(HttpStatus.OK)
 	public ReturnRequest delete(@PathVariable Long id) 
 	{

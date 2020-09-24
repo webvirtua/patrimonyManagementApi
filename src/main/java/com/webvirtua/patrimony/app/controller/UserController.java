@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.webvirtua.patrimony.app.contracts.controller.IController;
 import com.webvirtua.patrimony.app.core.excepions.RunTimeException;
 import com.webvirtua.patrimony.app.core.utils.ReturnRequest;
 import com.webvirtua.patrimony.app.core.utils.Status;
@@ -23,7 +24,7 @@ import com.webvirtua.patrimony.app.service.UserService;
 
 @RestController
 @RequestMapping("/v1/users")
-public class UserController 
+public class UserController implements IController<UserDTO>
 {
 	@Autowired 
 	private UserService userService;
@@ -31,7 +32,7 @@ public class UserController
 	@Autowired
 	private Status status;
 	
-	@GetMapping({"/", ""})
+	@GetMapping
 	@ResponseStatus(HttpStatus.OK)
 	public ReturnRequest findAll() 
 	{
@@ -53,7 +54,7 @@ public class UserController
 		}
 	}
 	
-	@GetMapping({"/{id}/", "/{id}"})
+	@GetMapping("/{id}")
 	@ResponseStatus(HttpStatus.OK)
 	public ReturnRequest findOne(@PathVariable Long id) 
 	{
@@ -75,7 +76,7 @@ public class UserController
 		}
 	}
 
-	@PostMapping({"/", ""})
+	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
 	public ReturnRequest insert(@Valid @RequestBody UserDTO user)
 	{
@@ -102,7 +103,7 @@ public class UserController
 		}
 	}
 	
-	@PutMapping({"/{id}/", "/{id}"})
+	@PutMapping("/{id}")
 	@ResponseStatus(HttpStatus.OK)
 	public ReturnRequest update(@Valid @PathVariable Long id, @RequestBody UserDTO user) 
 	{
@@ -128,7 +129,7 @@ public class UserController
 		}
 	}
 	
-	@DeleteMapping({"/{id}/", "/{id}"})
+	@DeleteMapping("/{id}")
 	@ResponseStatus(HttpStatus.OK)
 	public ReturnRequest delete(@PathVariable Long id) 
 	{

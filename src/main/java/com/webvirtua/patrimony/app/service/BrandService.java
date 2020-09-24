@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import com.webvirtua.patrimony.app.contracts.service.IService;
 import com.webvirtua.patrimony.app.core.excepions.RunTimeException;
 import com.webvirtua.patrimony.app.core.utils.ReturnRequest;
 import com.webvirtua.patrimony.app.core.utils.Status;
@@ -16,7 +17,7 @@ import com.webvirtua.patrimony.app.model.Brand;
 import com.webvirtua.patrimony.app.repository.BrandRepository;
 
 @Service
-public class BrandService
+public class BrandService implements IService<BrandDTO>
 {
 	private ModelMapper modelMapper;
 	

@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.webvirtua.patrimony.app.contracts.controller.IController;
 import com.webvirtua.patrimony.app.core.excepions.RunTimeException;
 import com.webvirtua.patrimony.app.core.utils.ReturnRequest;
 import com.webvirtua.patrimony.app.core.utils.Status;
@@ -23,7 +24,7 @@ import com.webvirtua.patrimony.app.service.BrandService;
 
 @RestController
 @RequestMapping("/v1/brands")
-public class BrandController 
+public class BrandController implements IController<BrandDTO>
 {
 	@Autowired 
 	private BrandService brandService;
@@ -31,7 +32,7 @@ public class BrandController
 	@Autowired
 	private Status status;
 	
-	@GetMapping({"/", ""})
+	@GetMapping
 	@ResponseStatus(HttpStatus.OK)
 	public ReturnRequest findAll() 
 	{
@@ -53,7 +54,7 @@ public class BrandController
 		}
 	}
 	
-	@GetMapping({"/{id}/", "/{id}"})
+	@GetMapping("/{id}")
 	@ResponseStatus(HttpStatus.OK)
 	public ReturnRequest findOne(@PathVariable Long id) 
 	{
@@ -75,7 +76,7 @@ public class BrandController
 		}
 	}
 
-	@PostMapping({"/", ""})
+	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
 	public ReturnRequest insert(@Valid @RequestBody BrandDTO brand)
 	{
@@ -99,7 +100,7 @@ public class BrandController
 		}
 	}
 	
-	@PutMapping({"/{id}/", "/{id}"})
+	@PutMapping("/{id}")
 	@ResponseStatus(HttpStatus.OK)
 	public ReturnRequest update(@Valid @PathVariable Long id, @RequestBody BrandDTO brand) 
 	{
@@ -123,7 +124,7 @@ public class BrandController
 		}
 	}
 	
-	@DeleteMapping({"/{id}/", "/{id}"})
+	@DeleteMapping("/{id}")
 	@ResponseStatus(HttpStatus.OK)
 	public ReturnRequest delete(@PathVariable Long id) 
 	{

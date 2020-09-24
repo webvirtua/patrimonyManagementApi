@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.webvirtua.patrimony.app.contracts.service.IService;
 import com.webvirtua.patrimony.app.core.excepions.RunTimeException;
 import com.webvirtua.patrimony.app.core.utils.ReturnRequest;
 import com.webvirtua.patrimony.app.dto.UserDTO;
@@ -17,7 +18,7 @@ import com.webvirtua.patrimony.app.repository.UserRepository;
 import com.webvirtua.patrimony.app.core.utils.Status;
 
 @Service
-public class UserService
+public class UserService implements IService<UserDTO>
 {
 	private ModelMapper modelMapper;
 	
