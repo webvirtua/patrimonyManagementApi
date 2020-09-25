@@ -1,9 +1,9 @@
 package com.webvirtua.patrimony.app.controller;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.webvirtua.patrimony.app.contracts.controller.IController;
@@ -32,13 +31,17 @@ public class UserController implements IController<UserDTO>
 	@Autowired
 	private Status status;
 	
+	@Autowired
+	private HttpServletResponse response;
+	
 	@GetMapping
-	@ResponseStatus(HttpStatus.OK)
 	public ReturnRequest findAll() 
 	{
 		try {
 			ReturnRequest result = userService.findAll();
+			
 			ResponseEntity.ok(result.getData());
+			response.setStatus(result.getStatus());
 			
 			return result;
 		} catch (Exception e) {
@@ -47,20 +50,22 @@ public class UserController implements IController<UserDTO>
 					.status(status.getCode400())
 					.errorMessage(e.getMessage())
 					.build();
-			
+		
 			ResponseEntity.badRequest().build();
+			response.setStatus(status.getCode400());
 			
 			return resultRequest;
 		}
 	}
 	
 	@GetMapping("/{id}")
-	@ResponseStatus(HttpStatus.OK)
 	public ReturnRequest findOne(@PathVariable Long id) 
 	{
 		try {
 			ReturnRequest result = userService.findOne(id);
+			
 			ResponseEntity.ok(result.getData());
+			response.setStatus(result.getStatus());
 			
 			return result;
 		} catch (Exception e) {
@@ -71,13 +76,13 @@ public class UserController implements IController<UserDTO>
 					.build();
 			
 			ResponseEntity.badRequest().build();
+			response.setStatus(status.getCode400());
 			
 			return resultRequest;
 		}
 	}
 
 	@PostMapping
-	@ResponseStatus(HttpStatus.CREATED)
 	public ReturnRequest insert(@Valid @RequestBody UserDTO user)
 	{
 		try {
@@ -86,8 +91,9 @@ public class UserController implements IController<UserDTO>
 			this.verifyPassword(user.getName());
 		
 			ReturnRequest result = userService.insert(user);
+			
 			ResponseEntity.ok(result.getData());
-			ResponseEntity.status(201);
+			response.setStatus(result.getStatus());
 			
 			return result;
 		} catch (Exception e) {
@@ -98,13 +104,13 @@ public class UserController implements IController<UserDTO>
 					.build();
 			
 			ResponseEntity.badRequest().build();
+			response.setStatus(status.getCode400());
 			
 			return resultRequest;
 		}
 	}
 	
 	@PutMapping("/{id}")
-	@ResponseStatus(HttpStatus.OK)
 	public ReturnRequest update(@Valid @PathVariable Long id, @RequestBody UserDTO user) 
 	{
 		try {
@@ -113,7 +119,9 @@ public class UserController implements IController<UserDTO>
 			this.verifyPassword(user.getName());
 			
 			ReturnRequest result = userService.update(id, user);
+			
 			ResponseEntity.ok(result.getData());
+			response.setStatus(result.getStatus());
 			
 			return result;
 		} catch (Exception e) {
@@ -124,18 +132,20 @@ public class UserController implements IController<UserDTO>
 					.build();
 			
 			ResponseEntity.badRequest().build();
+			response.setStatus(status.getCode400());
 			
 			return resultRequest;
 		}
 	}
 	
 	@DeleteMapping("/{id}")
-	@ResponseStatus(HttpStatus.OK)
 	public ReturnRequest delete(@PathVariable Long id) 
 	{
 		try {
 			ReturnRequest result = userService.delete(id);
+			
 			ResponseEntity.ok();
+			response.setStatus(result.getStatus());
 			
 			return result;
 		} catch (Exception e) {
@@ -146,6 +156,7 @@ public class UserController implements IController<UserDTO>
 					.build();
 			
 			ResponseEntity.badRequest().build();
+			response.setStatus(status.getCode400());
 			
 			return resultRequest;
 		}

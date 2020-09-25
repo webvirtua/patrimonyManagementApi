@@ -1,9 +1,9 @@
 package com.webvirtua.patrimony.app.controller;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.webvirtua.patrimony.app.contracts.controller.IController;
@@ -32,13 +31,17 @@ public class BrandController implements IController<BrandDTO>
 	@Autowired
 	private Status status;
 	
+	@Autowired
+	private HttpServletResponse response;
+	
 	@GetMapping
-	@ResponseStatus(HttpStatus.OK)
 	public ReturnRequest findAll() 
 	{
 		try {
 			ReturnRequest result = brandService.findAll();
+			
 			ResponseEntity.ok(result.getData());
+			response.setStatus(result.getStatus());
 			
 			return result;
 		} catch (Exception e) {
@@ -49,18 +52,20 @@ public class BrandController implements IController<BrandDTO>
 					.build();
 			
 			ResponseEntity.badRequest().build();
+			response.setStatus(status.getCode400());
 			
 			return resultRequest;
 		}
 	}
 	
 	@GetMapping("/{id}")
-	@ResponseStatus(HttpStatus.OK)
 	public ReturnRequest findOne(@PathVariable Long id) 
 	{
 		try {
 			ReturnRequest result = brandService.findOne(id);
+			
 			ResponseEntity.ok(result.getData());
+			response.setStatus(result.getStatus());
 			
 			return result;
 		} catch (Exception e) {
@@ -71,20 +76,22 @@ public class BrandController implements IController<BrandDTO>
 					.build();
 			
 			ResponseEntity.badRequest().build();
+			response.setStatus(status.getCode400());
 			
 			return resultRequest;
 		}
 	}
 
 	@PostMapping
-	@ResponseStatus(HttpStatus.CREATED)
 	public ReturnRequest insert(@Valid @RequestBody BrandDTO brand)
 	{
 		try {
 			this.verifyName(brand.getName());
 			
 			ReturnRequest result = brandService.insert(brand);
+			
 			ResponseEntity.ok(result.getData());
+			response.setStatus(result.getStatus());
 		
 			return result;
 		} catch (Exception e) {
@@ -95,20 +102,22 @@ public class BrandController implements IController<BrandDTO>
 					.build();
 			
 			ResponseEntity.badRequest().build();
+			response.setStatus(status.getCode400());
 			
 			return resultRequest;
 		}
 	}
 	
 	@PutMapping("/{id}")
-	@ResponseStatus(HttpStatus.OK)
 	public ReturnRequest update(@Valid @PathVariable Long id, @RequestBody BrandDTO brand) 
 	{
 		try {
 			this.verifyName(brand.getName());
 			
 			ReturnRequest result = brandService.update(id, brand);
+			
 			ResponseEntity.ok(result.getData());
+			response.setStatus(result.getStatus());
 			
 			return result;
 		} catch (Exception e) {
@@ -119,18 +128,20 @@ public class BrandController implements IController<BrandDTO>
 					.build();
 			
 			ResponseEntity.badRequest().build();
+			response.setStatus(status.getCode400());
 			
 			return resultRequest;
 		}
 	}
 	
 	@DeleteMapping("/{id}")
-	@ResponseStatus(HttpStatus.OK)
 	public ReturnRequest delete(@PathVariable Long id) 
 	{
 		try {
 			ReturnRequest result = brandService.delete(id);
+			
 			ResponseEntity.ok();
+			response.setStatus(result.getStatus());
 			
 			return result;
 		} catch (Exception e) {
@@ -141,6 +152,7 @@ public class BrandController implements IController<BrandDTO>
 					.build();
 			
 			ResponseEntity.badRequest().build();
+			response.setStatus(status.getCode400());
 			
 			return resultRequest;
 		}
