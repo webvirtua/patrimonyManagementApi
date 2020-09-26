@@ -106,13 +106,12 @@ public class UserService implements IService<UserDTO>
 		if (emailExist != null && (id != emailExist.getId())) {
 			throw new RunTimeException("E-mail pertence a outro usuário na base de dados.");
 		}
-		
-		user.setId(id);
-		
+	
 		String passwordHash = passwordEncoder.encode(user.getPassword());
 		user.setPassword(passwordHash);
 		
 		User entity = this.modelMapper.map(user, User.class);
+		entity.setId(id);
 		
 		User userUpdated = userRepository.save(entity);
 		

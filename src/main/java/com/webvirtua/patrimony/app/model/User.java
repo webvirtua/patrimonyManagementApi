@@ -32,7 +32,7 @@ public class User
 	private String name;
 	
 	@NotBlank
-	@Email
+	@Email(message = "E-mail inválido")
 	@Size(max = 120)
 	private String email;
 	

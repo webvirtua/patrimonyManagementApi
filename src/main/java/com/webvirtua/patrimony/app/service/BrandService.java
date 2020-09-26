@@ -102,9 +102,8 @@ public class BrandService implements IService<BrandDTO>
 			throw new RunTimeException("Marca está cadastrada em outro registro na base de dados.");
 		}
 		
-		brand.setId(id);
-		
 		Brand entity = this.modelMapper.map(brand, Brand.class);
+		entity.setId(id);
 
 		Brand brandAdded = brandRepository.save(entity);
 		

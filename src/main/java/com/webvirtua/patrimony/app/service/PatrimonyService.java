@@ -102,9 +102,8 @@ public class PatrimonyService implements IService<PatrimonyDTO>
 	
 	public ReturnRequest update(Long id, PatrimonyDTO patrimony) 
 	{
-		patrimony.setId(id);
-		
 		Patrimony entity = this.modelMapper.map(patrimony, Patrimony.class);
+		entity.setId(id);
 
 		Patrimony patrimonyUpdated = patrimonyRepository.save(entity);
 		patrimonyUpdated.setTumble(id);

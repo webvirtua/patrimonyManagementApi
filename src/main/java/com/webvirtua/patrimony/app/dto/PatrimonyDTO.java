@@ -4,18 +4,15 @@ import com.webvirtua.patrimony.app.model.Brand;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
-@Getter
-@Setter
+@Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class PatrimonyDTO 
 {
-	private Long id;
 	private String name;
 	private String description;
 	private Brand brand;
